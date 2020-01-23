@@ -3,7 +3,7 @@ const router = express.Router();
 const { getData } = require('../../light-house');
 const { saveData } = require('../../influx');
 const logger = require('../../utils/logger');
-const saveReport = require('../../utils/save-report');
+const { saveReport } = require('../../utils/save-report');
 
 router.post('/', async (req, res, next) => {
 

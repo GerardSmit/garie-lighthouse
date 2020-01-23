@@ -3,11 +3,11 @@ const { main } = require('./');
 const influx = require('./influx');
 const config = require('../config');
 const lightHouse = require('./light-house');
-const saveReport = require('./utils/save-report');
+const { saveReport } = require('./utils/save-report');
 
 jest.mock('./influx', () => {
     return {
-        init: jest.fn(),
+        init: jest.fn(() => Promise.resolve()),
         saveData: jest.fn(() => Promise.resolve())
     };
 });
@@ -41,7 +41,11 @@ jest.mock('cron', () => {
     };
 });
 
-jest.mock('./utils/save-report', () => jest.fn());
+jest.mock('./utils/save-report', () => {
+    return {
+        saveReport: jest.fn()
+    }
+});
 
 describe('main', () => {
     beforeEach(() => {

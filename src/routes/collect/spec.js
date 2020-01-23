@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { getData } = require('../../light-house');
 const { saveData } = require('../../influx');
-const saveReport = require('../../utils/save-report');
+const { saveReport } = require('../../utils/save-report');
 
 const { app } = require('../../');
 
@@ -19,7 +19,11 @@ jest.mock('../../influx', () => {
     }
 });
 
-jest.mock('../../utils/save-report', () => jest.fn());
+jest.mock('../../utils/save-report', () => {
+    return {
+        saveReport: jest.fn()
+    }
+});
 
 describe('webhooks', () => {
 
@@ -46,7 +50,7 @@ describe('webhooks', () => {
 
             await request(app)
                 .post('/collect')
-                .send({ url: 'https://www.example.co.uk' })
+                .send({ url: 'https://www.example.com' })
                 .set('Accept', 'application/json')
                 .expect(500);
 
@@ -58,7 +62,7 @@ describe('webhooks', () => {
 
             await request(app)
                 .post('/collect')
-                .send({ url: 'https://www.example.co.uk' })
+                .send({ url: 'https://www.example.com' })
                 .set('Accept', 'application/json')
                 .expect(500);
 
@@ -71,7 +75,7 @@ describe('webhooks', () => {
 
             request(app)
                 .post('/collect')
-                .send({ url: 'https://www.example.co.uk', report: true })
+                .send({ url: 'https://www.example.com', report: true })
                 .set('Accept', 'application/json')
                 .expect(201)
                 .end((err) => {
@@ -89,7 +93,7 @@ describe('webhooks', () => {
 
             request(app)
                 .post('/collect')
-                .send({ url: 'https://www.example.co.uk' })
+                .send({ url: 'https://www.example.com' })
                 .set('Accept', 'application/json')
                 .expect(201)
                 .end(err => {

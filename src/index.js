@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 const collect = require('./routes/collect');
 const logger = require('./utils/logger');
-const saveReport = require('./utils/save-report');
+const { saveReport } = require('./utils/save-report');
 const config = require('../config');
 const { getData } = require('./light-house');
 
@@ -68,7 +68,7 @@ const main = async () => {
     }
 };
 
-if (process.env.ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test') {
     app.listen(3000, async () => {
         console.log('Application listening on port 3000');
         await main();

@@ -1,4 +1,4 @@
-FROM node:8.10.0-slim
+FROM node:12-slim
 
 RUN mkdir -p /usr/src/garie-lighthouse
 WORKDIR /usr/src/garie-lighthouse
