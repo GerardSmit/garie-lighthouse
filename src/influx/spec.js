@@ -56,7 +56,7 @@ describe('influxdb', () => {
 
         it('writes influxdb points into the database for each property on a given object if it has values', async () => {
 
-            const result = await saveData('https://www.test.com', { firstname: 'bob', lastname: 'bob' });
+            await saveData('https://www.test.com', { firstname: 'bob', lastname: 'bob' });
 
             expect(influx.writePoints).toHaveBeenCalledWith([
                 {

@@ -1,4 +1,4 @@
-FROM node:12-slim
+FROM node:12-stretch-slim
 
 RUN mkdir -p /usr/src/garie-lighthouse
 WORKDIR /usr/src/garie-lighthouse
@@ -9,7 +9,10 @@ COPY src ./src
 
 RUN npm install --only=production
 
-RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+# Install wget
+RUN \
+    apt-get -y update && \
+    apt-get install -y wget gnupg2
 
 # Install Google Chrome
 RUN \
@@ -22,7 +25,7 @@ RUN \
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb
 RUN dpkg -i dumb-init_*.deb
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]    
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
 EXPOSE 3000
 

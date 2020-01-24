@@ -9,13 +9,12 @@ const init = async () => {
 		const names = await influx.getDatabaseNames();
 		if (names.indexOf('lighthouse') === -1) {
 			logger.info('InfluxDB: lighthouse database does not exist. Creating database');
-			return influx.createDatabase('lighthouse');
+			await influx.createDatabase('lighthouse');
 			logger.info('InfluxDB: lighthouse database created');
 		}
 		logger.info('InfluxDB', 'lighthouse database already exists. Skipping creation.');
-		return Promise.resolve();
 	} catch (err) {
-		return Promise.reject('Failed to initialise influx')
+		throw new Error('Failed to initialise influx: ' + err)
 	}
 
 };
